@@ -1,0 +1,10 @@
+#message-span {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+#message-span-warning {
+    font-size: 12px;
+    font-weight: 200;
+    line-height: 18px;
+}

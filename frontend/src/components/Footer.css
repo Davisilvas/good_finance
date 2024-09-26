@@ -1,0 +1,20 @@
+#footer {
+    font-family: "Fira Code", monospace;
+    font-size: 16px;
+    font-weight: 300;
+    background-color: #000;
+    height: 15vh;
+    padding: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    /* position: relative;
+    bottom: 0;
+    left: 0; */
+}
+
+#footer-section-one {
+    display: flex;
+    flex-direction: column;
+}

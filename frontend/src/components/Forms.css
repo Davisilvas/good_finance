@@ -1,0 +1,62 @@
+/* REMOVING THE ARROWS FROM TYPE NUMBER INPUT */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#forms-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+}
+
+#spendings-data {
+    padding: 1em;
+}
+
+.essential-spendings-data,
+.non-essential-spendings-data {
+    display: flex;
+    width: 30%;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#input-label {
+    display: flex;
+    flex-direction: column;
+    height: 4em;
+}
+
+input {
+    margin-top: 2px;
+    border-radius: 2px;
+    border: 1px solid #ffffff00;
+    border-bottom: 1px solid #000;
+    outline: none;
+    background-color: #ffffffa8;
+}
+
+input[type="number"]:focus {
+    background-color: #ffffffd3;
+}
+
+#non-essential,
+#essential {
+    margin-top: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#income-form {
+    margin-top: 1%;
+}

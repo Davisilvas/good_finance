@@ -1,0 +1,25 @@
+#board-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+#board {
+    background-color: #114084;
+    padding: 1em;
+    width: 80%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* #forms {
+    display: flex;
+    margin-top: 8px;
+    justify-content: space-evenly;
+    width: 80%;
+} */

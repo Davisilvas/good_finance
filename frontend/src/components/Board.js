@@ -1,5 +1,5 @@
 import React from 'react'
-import DataForm from './DataForm'
+import Dataform from '../pages/Form/DataForm'
 import Message from './Message'
 import "./Board.css"
 
@@ -8,7 +8,7 @@ const Board = () => {
         <div id='board-container'>
             <div id='board'>
                 <Message message="Please make sure to correctly input your data" />
-                <DataForm essential={true} />
+                <Dataform />
             </div>
         </div>
     )

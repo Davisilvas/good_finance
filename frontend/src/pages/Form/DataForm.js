@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import Message from './Message'
+import { useFetch } from '../../hooks/useFetch'
+import Message from '../../components/Message'
 import "./Forms.css"
 
 const DataForm = () => {
@@ -31,6 +32,10 @@ const DataForm = () => {
         localStorage.setItem(key, value)
     }
 
+    const URL = "http://localhost:5000/api/data"
+    // const { data, loading, error } = useFetch(obj, URL)
+    const handleFectch = useFetch
+
     const submitForm = (e) => {
         e.preventDefault();
         const essentials = {
@@ -60,25 +65,19 @@ const DataForm = () => {
             "income": { income }
         }
 
+
+        const data = {
+            "MonthlyIncome": monthlyIncome,
+            "Essentials": essentials,
+            "NonEssentials": nonEssental
+        }
+
+        handleFectch(data, URL)
+
         store("income", JSON.stringify(monthlyIncome))
         store("essencial", JSON.stringify(essentials))
         store("n_essencial", JSON.stringify(nonEssental))
-
-        console.log(essentials)
-        console.log(nonEssental)
     }
-
-    // const handleInput = (data) => {
-
-    //     data = parseFloat(data)
-    //     if(data === ""){
-    //         data = 0;
-    //         return data;
-    //     }
-
-    //     return data;
-    // }
-
 
     return (
         <div id='forms-container'>

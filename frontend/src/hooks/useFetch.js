@@ -1,20 +1,5 @@
 import { useState, useEffect } from 'react';
 
-// export function useFetch(obj, url) {
-//     fetch(url, {
-//         method: "POST",
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(obj)
-//     })
-//         .then(response => response.json())
-//         .then(obj => { console.log('Success: ', obj) })
-//         .catch(err => {
-//             console.error('Error: ', err)
-//         })
-//}
-
 export function useFetch(obj, url) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -50,4 +35,6 @@ export function useFetch(obj, url) {
     }, [url, obj])
     return { data, loading, error }
 }
+
+
 

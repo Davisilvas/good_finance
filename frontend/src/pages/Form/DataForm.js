@@ -1,266 +1,285 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFetch } from '../../hooks/useFetch'
 import Message from '../../components/Message'
 import "./Forms.css"
 
 const DataForm = () => {
+    const URL = "http://localhost:5000/api/data"
+
     // income state
-    const [income, setIncome] = useState()
+    const [incomeFormData, setIncomeFormData] = useState({
+        income: 0,
+    })
+    const handleIncomeFormDataEdit = (event, name) => {
+        setIncomeFormData({
+            ...incomeFormData,
+            [name]: event.target.value
+        })
+    }
     // essential states
-    const [rent, setRent] = useState('')
-    const [condominiumFee, setCondominiumFee] = useState('')
-    const [internet, setInternet] = useState('')
-    const [waterBill, setWaterBill] = useState('')
-    const [lightBill, setLightBill] = useState('')
-    const [cookingGas, setCookingGas] = useState('')
-    const [iptu, setIptu] = useState('')
-    const [grocery, setGrocery] = useState('')
-    const [healthCarePlan, setHealtCarePlan] = useState('')
-    const [pharmacyOne, setPharmacyOne] = useState('')
+    const [essentialsFormData, setEssentialsFormData] = useState({
+        rent: 0,
+        condominiumFee: 0,
+        internet: 0,
+        waterBill: 0,
+        lightBill: 0,
+        cookingGas: 0,
+        iptu: 0,
+        grocery: 0,
+        healthCarePlan: 0,
+        pharmacyOne: 0,
+    })
+    const handleEssentialsFormDataEdit = (event, name) => {
+        setEssentialsFormData({
+            ...essentialsFormData,
+            [name]: event.target.value
+        })
+    }
+
     // non essential states
-    const [streaming, setStreaming] = useState('')
-    const [creditCard, setCreditCard] = useState('')
-    const [fastFood, setFastFood] = useState('')
-    const [publicTransport, setPublicTransport] = useState('')
-    const [mobileBill, setMobileBill] = useState('')
-    const [fuel, setFuel] = useState('')
-    const [pharmacyTwo, setPharmacyTwo] = useState('')
-    const [vehicle, setVehicle] = useState('')
-    const [outing, setOuting] = useState('')
+    const [nonEssentialFormData, setNonEssentialFormData] = useState({
+        streaming: 0,
+        creditCard: 0,
+        fastFood: 0,
+        publicTransport: 0,
+        mobileBill: 0,
+        fuel: 0,
+        pharmacyTwo: 0,
+        vehicle: 0,
+        outing: 0,
+    })
+    const handleNonEssentialsFormDataEdit = (event, name) => {
+        setNonEssentialFormData({
+            ...nonEssentialFormData,
+            [name]: event.target.value
+        })
+    }
+
     // data obj state
-    const [financialData, setFinancialData] = useState(null)
+    const [financialData, setFinancialData] = useState({
+        'essentials': {},
+        'nonEssentials': {},
+        'income': {}
+    })
+
+    //const { data, loading, error } = useFetch(financialData, URL)
 
     const store = (key, value) => {
         localStorage.setItem(key, value)
     }
 
-    const URL = "http://localhost:5000/api/data"
-    const { data, loading, error } = useFetch(financialData, URL)
-    // const handleFectch = useFetch
+    useEffect(() => {
+        setFinancialData({
+            'essentials': essentialsFormData,
+            "nonEssentials": nonEssentialFormData,
+            "income": incomeFormData
+        })
+    }, [incomeFormData, essentialsFormData, nonEssentialFormData])
 
-    const submitForm = (e) => {
-        e.preventDefault();
 
-        const monthlyIncome = [{income}]
-
-        const essentials = [
-            { rent },
-            { condominiumFee },
-            { internet },
-            { waterBill },
-            { lightBill },
-            { cookingGas },
-            { iptu },
-            { grocery },
-            { healthCarePlan },
-            { pharmacyOne }
-        ]
-
-        const nonEssental = [
-            { streaming },
-            { creditCard },
-            { fastFood },
-            { publicTransport },
-            { mobileBill },
-            { fuel },
-            { pharmacyTwo },
-            { vehicle },
-            { outing }
-        ]
-
-        const data = {
-            "MonthlyIncome": monthlyIncome,
-            "Essentials": essentials,
-            "NonEssentials": nonEssental
-        }
-
-        // handleFectch(data, URL)
-
-        setFinancialData(data)
+    const submitForm = async (e) => {
         console.log(financialData)
 
-        store("income", JSON.stringify(monthlyIncome))
-        store("essencial", JSON.stringify(essentials))
-        store("n_essencial", JSON.stringify(nonEssental))
+        try {
+            e.preventDefault();
+            const response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(financialData)
+            })
+            const json = await response.json()
+            console.log(response.status)
+            console.log(json)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
         <div id='forms-container'>
-            <form id='spendings-data'>
+            <form id='spendings-data' onSubmit={submitForm}>
                 <label id='input-label'>
                     <Message message="Insira a sua renda mensal:" />
                     <input
-                        onChange={(e) => setIncome(parseFloat(e.target.value))}
+                        required
                         type='number'
-                        name='renda'>
-                    </input>
+                        value={incomeFormData.income}
+                        onChange={(e) => handleIncomeFormDataEdit(e, 'income')}
+                    />
                 </label>
                 <Message message="Category One: Essentials spendings" />
                 <label id="input-label">
                     <span>Aluguel</span>
                     <input
-                        onChange={e => setRent(parseFloat(e.target.value))}
+                        required
                         type='number'
-                        name='aluguel'>
-                    </input>
+                        value={essentialsFormData.rent}
+                        onChange={e => handleEssentialsFormDataEdit(e, 'rent')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Condomínio</span>
                     <input
-                        onChange={e => setCondominiumFee(parseFloat(e.target.value))}
+                        required
                         type='number'
-                        name='condominio'>
-                    </input>
+                        value={essentialsFormData.condominiumFee}
+                        onChange={e => handleEssentialsFormDataEdit(e, 'condominiumFee')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Internet</span>
                     <input
-                        onChange={e => setInternet(parseFloat(e.target.value))}
+                        required
                         type='number'
-                        name='internet'>
-                    </input>
+                        value={essentialsFormData.internet}
+                        onChange={e => handleEssentialsFormDataEdit(e, 'internet')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Água</span>
                     <Message message="Não preencha caso esteja incluso no condomínio" warning={true} />
                     <input
-                        onChange={e => setWaterBill(parseFloat(e.target.value))}
                         type='number'
-                        name='agua'>
-                    </input>
+                        value={essentialsFormData.waterBill}
+                        onChange={e => handleEssentialsFormDataEdit(e, 'waterBill')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Luz</span>
                     <Message message="Não preencha caso esteja incluso no condomínio" warning={true} />
                     <input
-                        onChange={e => setLightBill(parseFloat(e.target.value))}
                         type='number'
-                        name='luz'>
-                    </input>
+                        value={essentialsFormData.lightBill}
+                        onChange={e => handleEssentialsFormDataEdit(e, 'lightBill')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Gás</span>
                     <Message message="Não preencha caso esteja incluso no condomínio" warning={true} />
                     <input
-                        onChange={e => setCookingGas(parseFloat(e.target.value))}
                         type='number'
-                        name='gas'>
-                    </input>
+                        value={essentialsFormData.cookingGas}
+                        onChange={e => handleEssentialsFormDataEdit(e, 'cookingGas')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>IPTU</span>
                     <Message message="Não preencha caso esteja incluso no condomínio" warning={true} />
                     <input
-                        onChange={e => setIptu(parseFloat(e.target.value))}
                         type='number'
-                        name='iptu'>
-                    </input>
+                        value={essentialsFormData.iptu}
+                        onChange={e => handleEssentialsFormDataEdit(e, 'iptu')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Mercado</span>
                     <Message message="Não preencha caso seja Vale Alimentação " warning={true} />
                     <input
-                        onChange={e => setGrocery(parseFloat(e.target.value))}
                         type='number'
-                        name='mercado'>
-                    </input>
+                        value={essentialsFormData.grocery}
+                        onChange={e => handleEssentialsFormDataEdit(e, 'grocery')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Plano de Saúde</span>
                     <Message message="Não preencha caso seja benefício do trabalho" warning={true} />
                     <input
-                        onChange={e => setHealtCarePlan(parseFloat(e.target.value))}
                         type='number'
-                        name='planosaude'>
-                    </input>
+                        value={essentialsFormData.healthCarePlan}
+                        onChange={e => handleEssentialsFormDataEdit(e, 'healthCarePlan')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Famácia I</span>
                     <Message message="Remédios" warning={true} />
                     <input
-                        onChange={e => setPharmacyOne(parseFloat(e.target.value))}
                         type='number'
-                        name='farmaciaI'>
-                    </input>
+                        value={essentialsFormData.pharmacyOne}
+                        onChange={e => handleEssentialsFormDataEdit(e, 'pharmacyOne')}
+                    />
                 </label>
 
                 <Message message="Category Two: Non Essentials spendings" />
                 <label id="input-label">
-                    <span>Streaming</span>
-                    <input
-                        onChange={e => setStreaming(parseFloat(e.target.value))}
-                        type='number'
-                        name='streaming'>
-                    </input>
-                </label>
-                <label id="input-label">
                     <span>Cartão</span>
                     <input
-                        onChange={e => setCreditCard(parseFloat(e.target.value))}
+                        required
                         type='number'
-                        name='cartao'>
-                    </input>
+                        value={nonEssentialFormData.creditCard}
+                        onChange={e => handleNonEssentialsFormDataEdit(e, 'creditCard')}
+                    />
+                </label>
+                <label id="input-label">
+                    <span>Streaming</span>
+                    <input
+                        type='number'
+                        value={nonEssentialFormData.streaming}
+                        onChange={e => handleNonEssentialsFormDataEdit(e, 'streaming')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Fast Food</span>
                     <input
-                        onChange={e => setFastFood(parseFloat(e.target.value))}
                         type='number'
-                        name='fastfood'>
-                    </input>
+                        value={nonEssentialFormData.fastFood}
+                        onChange={e => handleNonEssentialsFormDataEdit(e, 'fastFood')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Transporte</span>
                     <input
-                        onChange={e => setPublicTransport(parseFloat(e.target.value))}
                         type='number'
-                        name='transporte'>
-                    </input>
+                        value={nonEssentialFormData.publicTransport}
+                        onChange={e => handleNonEssentialsFormDataEdit(e, 'publicTransport')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Telefone</span>
                     <input
-                        onChange={e => setMobileBill(parseFloat(e.target.value))}
                         type='number'
-                        name='telefone'>
-                    </input>
+                        value={nonEssentialFormData.mobileBill}
+                        onChange={e => handleNonEssentialsFormDataEdit(e, 'mobileBill')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Combustível</span>
                     <input
-                        onChange={e => setFuel(parseFloat(e.target.value))}
                         type='number'
-                        name='combustivel'>
-                    </input>
+                        name='combustivel'
+                        value={nonEssentialFormData.fuel}
+                        onChange={e => handleNonEssentialsFormDataEdit(e, 'fuel')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Farmácia II</span>
                     <Message message="Cosméticos" warning={true} />
                     <input
-                        onChange={e => setPharmacyTwo(parseFloat(e.target.value))}
                         type='number'
-                        name='farmaciaII'>
-                    </input>
+                        value={nonEssentialFormData.pharmacyTwo}
+                        onChange={e => handleNonEssentialsFormDataEdit(e, 'pharmacyTwo')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Veículo</span>
                     <Message message="Financiamento / Manutenção" warning={true} />
                     <input
-                        onChange={e => setVehicle(parseFloat(e.target.value))}
                         type='number'
-                        name='veiculo'>
-                    </input>
+                        value={nonEssentialFormData.vehicle}
+                        onChange={e => handleNonEssentialsFormDataEdit(e, 'vehicle')}
+                    />
                 </label>
                 <label id="input-label">
                     <span>Saídas</span>
                     <Message message="Passeios, cinema, shows, restaurantes..." warning={true} />
                     <input
-                        onChange={e => setOuting(parseFloat(e.target.value))}
                         type='number'
-                        name='saidas'>
-                    </input>
+                        value={nonEssentialFormData.outing}
+                        onChange={e => handleNonEssentialsFormDataEdit(e, 'outing')}
+                    />
                 </label>
-                <button onClick={submitForm} type='submit'>Submit</button>
+                <button type='submit'>Submit</button>
             </form>
         </div>
     )

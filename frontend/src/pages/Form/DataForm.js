@@ -27,44 +27,46 @@ const DataForm = () => {
     const [pharmacyTwo, setPharmacyTwo] = useState('')
     const [vehicle, setVehicle] = useState('')
     const [outing, setOuting] = useState('')
+    // data obj state
+    const [financialData, setFinancialData] = useState(null)
 
     const store = (key, value) => {
         localStorage.setItem(key, value)
     }
 
     const URL = "http://localhost:5000/api/data"
-    // const { data, loading, error } = useFetch(obj, URL)
-    const handleFectch = useFetch
+    const { data, loading, error } = useFetch(financialData, URL)
+    // const handleFectch = useFetch
 
     const submitForm = (e) => {
         e.preventDefault();
-        const essentials = {
-            rent: { rent },
-            condominium: { condominiumFee },
-            internet: { internet },
-            water: { waterBill },
-            light: { lightBill },
-            cookingGas: { cookingGas },
-            IPTU: { iptu },
-            grocery: { grocery },
-            healthCare: { healthCarePlan },
-            pharmacyOne: { pharmacyOne },
-        }
-        const nonEssental = {
-            "streaming": { streaming },
-            "creditCard": { creditCard },
-            "fastFood": { fastFood },
-            "publicTransport": { publicTransport },
-            "mobileBill": { mobileBill },
-            "fuel": { fuel },
-            "pharmacyTwo": { pharmacyTwo },
-            "vehicle": { vehicle },
-            "outing": { outing }
-        }
-        const monthlyIncome = {
-            "income": { income }
-        }
 
+        const monthlyIncome = [{income}]
+
+        const essentials = [
+            { rent },
+            { condominiumFee },
+            { internet },
+            { waterBill },
+            { lightBill },
+            { cookingGas },
+            { iptu },
+            { grocery },
+            { healthCarePlan },
+            { pharmacyOne }
+        ]
+
+        const nonEssental = [
+            { streaming },
+            { creditCard },
+            { fastFood },
+            { publicTransport },
+            { mobileBill },
+            { fuel },
+            { pharmacyTwo },
+            { vehicle },
+            { outing }
+        ]
 
         const data = {
             "MonthlyIncome": monthlyIncome,
@@ -72,7 +74,10 @@ const DataForm = () => {
             "NonEssentials": nonEssental
         }
 
-        handleFectch(data, URL)
+        // handleFectch(data, URL)
+
+        setFinancialData(data)
+        console.log(financialData)
 
         store("income", JSON.stringify(monthlyIncome))
         store("essencial", JSON.stringify(essentials))

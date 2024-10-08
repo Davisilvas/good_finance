@@ -9,8 +9,9 @@ router.get('/data/test', (req, res) => {
 })
 router.post('/data', (req, res) => {
     const { income, essentials, nonEssentials } = req.body
-    // console.log(`FROM FINANCIAL DATA ROUTES ${sumAllValues(essentials)}`)
-    console.log(calcPercentage(essentials, income))
+    const essentialsPercentage = calcPercentage(essentials, income)
+    const nonEssentialsPercentage = calcPercentage(nonEssentials, income)
+    console.log(`Essentials percentage ${essentialsPercentage} \nNon Essentials Percentage ${nonEssentialsPercentage}`)
     res.json({
         message: "ok",
         data: req.body

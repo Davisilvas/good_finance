@@ -26,9 +26,8 @@ const sumAllValues = obj => {
 
 const calcPercentage = (spendingValue, incomeValue) => {
     result = sumAllValues(spendingValue) / sumAllValues(incomeValue);
-    console.log(`result ${result} spendings ${spendingValue}  income ${incomeValue}`)
 
-    return result;
+    return result * 100;
 }
 
 

@@ -1,10 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useFetch } from '../../hooks/useFetch'
+import FinancialDataContext from '../../Contexts/FinancialContext'
 import Message from '../../components/Message'
 import "./Forms.css"
 
 const DataForm = () => {
     const URL = "http://localhost:5000/api/data"
+
+    const { dataContext, setDataContext } = useContext(FinancialDataContext)
+    // const results = data
+
+    // ACTIVES THE FETCH
+    const [triggerFetch, setTriggerFetch] = useState(false)
 
     // income state
     const [incomeFormData, setIncomeFormData] = useState({
@@ -62,11 +69,19 @@ const DataForm = () => {
         'income': {}
     })
 
-    //const { data, loading, error } = useFetch(financialData, URL)
 
-    const store = (key, value) => {
-        localStorage.setItem(key, value)
-    }
+
+    const { data, loading, error } = useFetch(
+        triggerFetch ? URL : null,
+        triggerFetch
+            ? {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(financialData)
+            } : {}
+    )
 
     useEffect(() => {
         setFinancialData({
@@ -75,26 +90,14 @@ const DataForm = () => {
             "income": incomeFormData
         })
     }, [incomeFormData, essentialsFormData, nonEssentialFormData])
-
+    
+    useEffect(() => {
+        if (triggerFetch) setTriggerFetch(false)
+    }, [triggerFetch] )
 
     const submitForm = async (e) => {
-        console.log(financialData)
-
-        try {
-            e.preventDefault();
-            const response = await fetch(URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(financialData)
-            })
-            const json = await response.json()
-            console.log(response.status)
-            console.log(json)
-        } catch (error) {
-            console.log(error)
-        }
+        e.preventDefault()
+        setTriggerFetch(true)
     }
 
     return (

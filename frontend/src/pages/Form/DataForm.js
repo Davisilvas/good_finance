@@ -83,6 +83,10 @@ const DataForm = () => {
             } : {}
     )
 
+    // const testDataContext = async ()=>{
+    //     await
+    // }
+
     useEffect(() => {
         setFinancialData({
             'essentials': essentialsFormData,
@@ -90,10 +94,26 @@ const DataForm = () => {
             "income": incomeFormData
         })
     }, [incomeFormData, essentialsFormData, nonEssentialFormData])
-    
+
     useEffect(() => {
-        if (triggerFetch) setTriggerFetch(false)
-    }, [triggerFetch] )
+        // if (data != null) {
+        //     setDataContext({
+        //         "inputs": data.data,
+        //         'results': data.results
+        //     })
+        // }
+        if (triggerFetch) {
+            if (data != null) {
+                setDataContext({
+                    ...dataContext,
+                    "inputs": data.data,
+                    'results': data.results
+                })
+            }
+            setTriggerFetch(false)
+        }
+        // console.log(`THIS IS DATA CONTEXT\n${JSON.stringify(dataContext)}`)
+    }, [triggerFetch])
 
     const submitForm = async (e) => {
         e.preventDefault()

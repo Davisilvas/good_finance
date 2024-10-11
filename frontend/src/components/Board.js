@@ -5,12 +5,16 @@ import "./Board.css"
 import FinancialDataContext from '../Contexts/FinancialContext'
 
 const Board = () => {
-    const { data } = useContext(FinancialDataContext)
+    const { dataContext } = useContext(FinancialDataContext)
+
+    if (dataContext === null) {
+        return <p>Nenhum dado disponível</p>
+    }
 
     return (
         <div id='board-container'>
             <div id='board'>
-                <span>31231</span>
+                {dataContext ? <p>Inputs: {JSON.stringify(dataContext.inputs)}</p> : <p>teste</p>}
                 <Message message="Please make sure to correctly input your data" />
                 <Dataform />
             </div>

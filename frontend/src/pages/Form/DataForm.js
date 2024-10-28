@@ -1,14 +1,10 @@
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 import { useFetch } from '../../hooks/useFetch'
-import FinancialDataContext from '../../Contexts/FinancialContext'
 import Message from '../../components/Message'
 import "./Forms.css"
 
 const DataForm = () => {
     const URL = "http://localhost:5000/api/data"
-
-    const { dataContext, setDataContext } = useContext(FinancialDataContext)
-    // const results = data
 
     // ACTIVES THE FETCH
     const [triggerFetch, setTriggerFetch] = useState(false)
@@ -83,10 +79,6 @@ const DataForm = () => {
             } : {}
     )
 
-    // const testDataContext = async ()=>{
-    //     await
-    // }
-
     useEffect(() => {
         setFinancialData({
             'essentials': essentialsFormData,
@@ -96,23 +88,7 @@ const DataForm = () => {
     }, [incomeFormData, essentialsFormData, nonEssentialFormData])
 
     useEffect(() => {
-        // if (data != null) {
-        //     setDataContext({
-        //         "inputs": data.data,
-        //         'results': data.results
-        //     })
-        // }
-        if (triggerFetch) {
-            if (data != null) {
-                setDataContext({
-                    ...dataContext,
-                    "inputs": data.data,
-                    'results': data.results
-                })
-            }
-            setTriggerFetch(false)
-        }
-        // console.log(`THIS IS DATA CONTEXT\n${JSON.stringify(dataContext)}`)
+        if (triggerFetch) setTriggerFetch(false)
     }, [triggerFetch])
 
     const submitForm = async (e) => {
